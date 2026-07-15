@@ -39,8 +39,16 @@
   }
   .topbar{
     width:100%;max-width:640px;display:flex;justify-content:flex-end;
-    padding-top:14px;
+    align-items:center;gap:10px;padding-top:14px;
   }
+  .download-btn{
+    background:var(--yellow);color:var(--ink);border:2px solid #B87700;
+    border-radius:999px;padding:8px 16px;font-family:'Space Grotesk',sans-serif;
+    font-weight:700;font-size:.85rem;cursor:pointer;
+    box-shadow:0 3px 0 #8A5900;
+  }
+  .download-btn:hover{transform:translateY(-1px)}
+  .download-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #8A5900}
   .gear-btn{
     background:var(--ink2);color:var(--mint);border:2px solid #3A2A6B;
     border-radius:999px;padding:8px 16px;font-family:'Space Grotesk',sans-serif;
@@ -94,7 +102,7 @@
   .spin-btn:hover{transform:translateY(-2px)}
   .spin-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #B87700}
   .spin-btn:disabled{opacity:.6;cursor:wait}
-  .spin-btn:focus-visible,.action-btn:focus-visible,.gear-btn:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+  .spin-btn:focus-visible,.action-btn:focus-visible,.download-btn:focus-visible,.gear-btn:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
 
   .result{
     max-width:640px;width:100%;margin-top:26px;background:var(--paper);color:var(--ink);
@@ -205,6 +213,7 @@
 </div>
 
 <div class="topbar">
+  <button class="download-btn" onclick="downloadStarterFile()">⬇️ Download Starter File</button>
   <button class="gear-btn" onclick="openSettings('api')">⚙️ Setup</button>
 </div>
 
@@ -337,6 +346,21 @@ let spinning = false;
 let allModels = [];       // fetched from OpenRouter
 let modelsLoaded = false;
 let hlIndex = -1;
+
+/* ---------- Download starter file ---------- */
+function downloadStarterFile(){
+  const source = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+  const blob = new Blob([source], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "index.html";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  toast("Starter file downloaded!");
+}
 
 /* ---------- Setup strip ---------- */
 function refreshStrip(){
